@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,7 +20,7 @@ import java.util.List;
 public class EventTicket {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String title;
@@ -25,6 +28,7 @@ public class EventTicket {
     private Double price;
     private Double totalAvailability;
     private Double balance;
+    private Date eventDate;
 
     @ManyToOne
     @JoinColumn(name = "c_id", referencedColumnName = "id")
@@ -37,6 +41,10 @@ public class EventTicket {
     @JsonIgnore
     @OneToMany(mappedBy = "eventTicket")
     private List<BookedEvents> bookedEvents;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
 
 }
