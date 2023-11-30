@@ -1,5 +1,6 @@
 package com.restapi.controller.admin;
 
+import com.restapi.dto.BookedDto;
 import com.restapi.response.BookedEventsResponse;
 import com.restapi.response.common.APIResponse;
 import com.restapi.service.BookedEventsService;
@@ -22,6 +23,8 @@ public class AdminBookedEvents {
 
     @Autowired
     private BookedEventsService bookedEventsService;
+    @Autowired
+    private BookedDto bookedDto;
 
     @GetMapping("/all")
     public ResponseEntity<APIResponse> getAllBookedEvents() {

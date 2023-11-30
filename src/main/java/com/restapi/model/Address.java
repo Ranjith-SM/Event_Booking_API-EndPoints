@@ -19,10 +19,13 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false, length = 100)
     private String address;
 
+    @Column(nullable = false, length = 100)
     private String city;
 
+    @Column(nullable = false, length = 100)
     private Double zipcode;
 
     @JsonIgnore

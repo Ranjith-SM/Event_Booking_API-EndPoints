@@ -10,9 +10,13 @@ import com.restapi.request.BookedEventsRequest;
 import com.restapi.request.BookedUsersRequest;
 import com.restapi.request.EventRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,6 +51,9 @@ public class EventService {
     @Autowired
     private BookedUsedDetailsRepository bookedUsedDetailsRepository;
 
+    @Autowired
+    private StorageService storageService;
+
 
     public List<EventTicket> findAll() {
         return eventTicketRepository.findAll();
@@ -55,19 +62,21 @@ public class EventService {
 
     @Transactional
     public List<EventTicket> createEvent(EventRequest eventRequest) {
-
+        System.out.println(eventRequest.getAddress());
         EventTicket event = eventDto.mapToEvent(eventRequest);
-        EventCategory category = categoryRepository.findById(eventRequest.getCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("CategoryId",
-                        "CategoryId", eventRequest.getCategoryId()));
         AddressRequest addressRequest = addressDto.mapToAddressRequest(eventRequest);
         Address address = addressDto.mapToAddress(addressRequest);
 
-        address = addressRepository.save(address);
+        EventCategory category = categoryRepository.findById(eventRequest.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("CategoryId",
+                        "CategoryId", eventRequest.getCategoryId()));
+        System.out.println(category.getId());
 
-//        addressService.create(addressRequest);
+        address = addressRepository.save(address);
+        System.out.println(address.getId());
 
         event.setEventCategory(category);
+        System.out.println(address.getId());
         event.setAddress(address);
 
         eventTicketRepository.save(event);
@@ -113,25 +122,35 @@ public class EventService {
         bookedEvents = bookedEventsRepository.save(bookedEvents);
 
 
-        BookedUserDetails bookedUserDetails = new BookedUserDetails();
+        List<BookedUserDetails> bookedUserDetails = new ArrayList<>();
         for (BookedUsersRequest userDetails : bookedEventsRequest.getUserDetails()) {
-
+            BookedUserDetails  bookedUserDetails1 = new BookedUserDetails();
             EventTicket id = new EventTicket();
 
             id.setId(userDetails.getEventId());
             bookedEvents.setEventTicket(id);
 
-            bookedUserDetails.setEventid(bookedEvents);
-            bookedUserDetails.setName(userDetails.getName());
-            bookedUserDetails.setAge(userDetails.getAge());
-            bookedUserDetails.setGender(userDetails.getGender());
+            bookedUserDetails1.setEventid(bookedEvents);
+            bookedUserDetails1.setName(userDetails.getName());
+            bookedUserDetails1.setAge(userDetails.getAge());
+            bookedUserDetails1.setGender(userDetails.getGender());
+            BookedUserDetails userDetailsList= bookedUsedDetailsRepository.save(bookedUserDetails1);
+
+            bookedUserDetails.add(userDetailsList);
 
         }
-        List<BookedUserDetails> userDetailsList= Collections.singletonList(bookedUsedDetailsRepository.save(bookedUserDetails));
 
-        bookedEvents.setUserDetails(userDetailsList);
+        bookedEvents.setUserDetails(bookedUserDetails);
 
 
         return bookedEvents;
+    }
+
+    public File getFile(Integer id) throws IOException {
+        EventTicket eventTicket = eventTicketRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("id", "id", id));
+
+        Resource resource = storageService.loadFileAsResource(eventTicket.getImage());
+        return resource.getFile();
     }
 }

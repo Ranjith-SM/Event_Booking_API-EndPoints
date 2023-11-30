@@ -27,18 +27,12 @@ public class AppUser {
     private Long id;
 
     @Column(name = "username", unique = true, nullable = false, length = 100)
-    @NotEmpty
-    @Size(min = 2, message = "Username should have at least 2 characters")
     private String username;
 
     @Column(nullable = false, length = 100)
-    @NotEmpty
-    @Size(min = 2, message = "Password should have at least 2 characters")
     private String password;
 
     @Column(nullable = false, length = 100)
-    @NotEmpty
-    @Size(min = 2, message = "Name should have at least 2 characters")
     private String name;
 
     @JsonIgnore
@@ -47,8 +41,8 @@ public class AppUser {
     private Role roles;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "appUser")
-    private BookedEvents bookedEvents;
+    @OneToMany(mappedBy = "appUser")
+    private List<BookedEvents> bookedEvents;
 
     @CreationTimestamp
     @Column(updatable = false)

@@ -20,11 +20,8 @@ public class BookedDto {
             bookedEventsResponse.setEventTicket(event.getEventTicket());
             bookedEventsResponse.setAppUser(event.getAppUser());
             bookedEventsResponse.setCount(event.getCount());
-
-            System.out.println(event.getUserDetails());
+            bookedEventsResponse.setBookedAt(String.valueOf(event.getCreatedAt()));
             bookedEventsResponse.setUserDetails(event.getUserDetails());
-
-            System.out.println(bookedEventsResponse.getUserDetails());
             bookedEventsResponseList.add(bookedEventsResponse);
         }
 

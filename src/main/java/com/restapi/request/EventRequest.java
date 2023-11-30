@@ -9,7 +9,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -21,6 +23,8 @@ public class EventRequest {
     @NotEmpty
     @Size(min=3, message = "Title should be more than 3 characters")
     private String title;
+
+    private String image;
 
     @NotEmpty
     @Size(min=15, message = "Title should be more than 15 characters")
@@ -39,7 +43,7 @@ public class EventRequest {
     private Double balance;
 
     @NotEmpty
-    private LocalDateTime eventDate;
+    private String eventDate;
 
     @NotEmpty
     @Positive

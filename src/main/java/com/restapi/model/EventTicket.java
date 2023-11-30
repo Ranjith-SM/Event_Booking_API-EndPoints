@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -23,11 +24,24 @@ public class EventTicket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false, length = 100)
     private String title;
+
+    private String image;
+
+    @Column(nullable = false, length = 100)
     private String desc;
+
+    @Column(nullable = false, length = 100)
     private Double price;
+
+    @Column(nullable = false, length = 100)
     private Double totalAvailability;
+
+    @Column(nullable = false, length = 100)
     private Double balance;
+
+    @Column(nullable = false, length = 100)
     private Date eventDate;
 
     @ManyToOne

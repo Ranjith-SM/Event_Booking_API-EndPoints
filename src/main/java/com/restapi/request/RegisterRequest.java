@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.UniqueElements;
 
+import javax.persistence.Column;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -12,7 +14,7 @@ import javax.validation.constraints.Size;
 public class RegisterRequest {
 
     @NotEmpty
-    @UniqueElements
+    @Column(unique = true)
     @Size(min = 6, message = "Username should have at least 6 characters")
     private String username;
 

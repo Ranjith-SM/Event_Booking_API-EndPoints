@@ -11,10 +11,8 @@ import javax.validation.constraints.Size;
 public class LoginRequest {
 
     @NotEmpty
-    @Size(min = 6, message = "Username should have at least 6 characters")
     private String username;
 
     @NotEmpty
-    @Size(min = 8, message = "Password should have at least 8 characters")
     private String password;
 }

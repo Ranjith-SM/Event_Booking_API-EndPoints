@@ -19,5 +19,6 @@ public class BookedEventsResponse {
     private EventTicket eventTicket;
     private AppUser appUser;
     private Integer count;
+    private String BookedAt;
     private List<BookedUserDetails> userDetails;
 }

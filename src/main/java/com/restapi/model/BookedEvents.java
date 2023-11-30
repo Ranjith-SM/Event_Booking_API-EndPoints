@@ -25,10 +25,11 @@ public class BookedEvents {
     @JoinColumn(name="event_id",referencedColumnName = "id")
     private EventTicket eventTicket;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private AppUser appUser;
 
+    @Column(nullable = false, length = 100)
     private Integer count;
 
     @OneToMany(mappedBy ="eventid")

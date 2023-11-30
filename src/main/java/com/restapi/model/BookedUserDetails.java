@@ -27,10 +27,13 @@ public class BookedUserDetails {
     @JoinColumn(name = "e_id",referencedColumnName = "id")
     private BookedEvents eventid;
 
+    @Column(nullable = false, length = 100)
     private String name;
 
+    @Column(nullable = false, length = 100)
     private String gender;
 
+    @Column(nullable = false, length = 100)
     private Double age;
 
     @CreationTimestamp
