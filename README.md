@@ -57,6 +57,8 @@ This project is developed using JAVA V-17.0.8 and Springboot for the backend API
 
 ## MYSQL SCHEMA:
 
+<img src="Screenshots/SQLSchema.png">
+
 
 ## ACCESS CREDENTIALS:
 
