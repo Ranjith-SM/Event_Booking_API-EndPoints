@@ -1561,3 +1561,5 @@
 2023-12-01 12:01:26.063 DEBUG 14376 --- [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/admin/booked_events/all
 2023-12-01 12:01:26.094 TRACE 14376 --- [http-nio-8080-exec-2] o.s.s.w.header.writers.HstsHeaderWriter  : Not injecting HSTS header since it did not match request to [Is Secure]
 2023-12-01 12:01:26.095 DEBUG 14376 --- [http-nio-8080-exec-2] s.s.w.c.SecurityContextPersistenceFilter : Cleared SecurityContextHolder to complete request
+2023-12-01 14:25:14.593  WARN 14376 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=55m9s136ms919µs200ns).
+2023-12-01 16:08:32.282  WARN 14376 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=9m16s34ms362µs500ns).
