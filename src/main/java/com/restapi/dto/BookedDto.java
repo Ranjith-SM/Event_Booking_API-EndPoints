@@ -24,8 +24,9 @@ public class BookedDto {
             bookedEventsResponse.setUserDetails(event.getUserDetails());
             bookedEventsResponseList.add(bookedEventsResponse);
         }
-
         return bookedEventsResponseList;
-
     }
+
+
+
 }

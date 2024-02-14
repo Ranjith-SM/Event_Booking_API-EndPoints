@@ -1,6 +1,7 @@
 package com.restapi.controller.admin;
 
 
+import com.restapi.dto.AdminDto;
 import com.restapi.model.AppUser;
 import com.restapi.response.common.APIResponse;
 import com.restapi.service.UserService;
@@ -23,9 +24,13 @@ public class AdminUserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AdminDto adminDto;
+
     @GetMapping("/all")
     public ResponseEntity<APIResponse> getAllUsers() {
-        List<AppUser> appUsers = userService.findAll();
+        List<AppUser> appUsers = adminDto.getUsers(userService.findAll());
+
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(appUsers);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);

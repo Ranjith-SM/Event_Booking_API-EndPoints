@@ -3,6 +3,7 @@ package com.restapi.controller.admin;
 import com.restapi.model.EventTicket;
 import com.restapi.request.EventCategoryRequest;
 import com.restapi.request.EventRequest;
+import com.restapi.request.UpdateRequest;
 import com.restapi.response.CategoryResponse;
 import com.restapi.response.common.APIResponse;
 import com.restapi.service.EventCategoryService;
@@ -55,19 +56,8 @@ public class AdminEventTicketController {
                                                    @RequestParam("city") String city,
                                                    @RequestParam("zipcode") String zipcode
                                                    ) throws IOException {
-        System.out.println(image);
-        System.out.println(title);
-        System.out.println(desc);
-        System.out.println(price);
-        System.out.println(eventDate);
-        System.out.println(balance);
-        System.out.println(totalAvailability);
-        System.out.println(categoryId);
-        System.out.println(address);
-        System.out.println(city);
-        System.out.println(zipcode);
+
         String file = storageService.storeFile(image);
-        System.out.println(file);
 
         EventRequest eventRequest = new EventRequest();
         eventRequest.setTitle(title);
@@ -89,8 +79,31 @@ public class AdminEventTicketController {
     }
 
     @PutMapping
-    public ResponseEntity<APIResponse> updateEvent(@RequestBody EventRequest eventRequest) {
-        List<EventTicket> eventList = eventService.updateEvent(eventRequest);
+    public ResponseEntity<APIResponse> updateEvent(@RequestParam("id") Integer id,
+                                                   @RequestParam("categoryId") Long categoryId,
+                                                   @RequestParam("title") String title,
+                                                   @RequestParam("desc") String desc,
+                                                   @RequestParam("price") Double price,
+                                                   @RequestParam("totalAvailability") Double totalAvailability,
+                                                   @RequestParam("balance") Double balance,
+                                                   @RequestParam("eventDate") String eventDate,
+                                                   @RequestParam("address") String address,
+                                                   @RequestParam("city") String city,
+                                                   @RequestParam("zipcode") String zipcode) {
+
+        UpdateRequest updateRequest = new UpdateRequest();
+        updateRequest.setId(id);
+        updateRequest.setTitle(title);
+        updateRequest.setDesc(desc);
+        updateRequest.setPrice(price);
+        updateRequest.setEventDate(eventDate);
+        updateRequest.setTotalAvailability(totalAvailability);
+        updateRequest.setBalance(balance);
+        updateRequest.setCategoryId(categoryId);
+        updateRequest.setAddress(address);
+        updateRequest.setCity(city);
+        updateRequest.setZipcode(zipcode);
+        List<EventTicket> eventList = eventService.updateEvent(updateRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(eventList);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);

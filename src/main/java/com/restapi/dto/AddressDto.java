@@ -3,6 +3,7 @@ package com.restapi.dto;
 import com.restapi.model.Address;
 import com.restapi.request.AddressRequest;
 import com.restapi.request.EventRequest;
+import com.restapi.request.UpdateRequest;
 import com.restapi.response.AddressResponse;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,19 @@ public class AddressDto {
         address.setAddress(addressRequest.getAddress());
         address.setCity(addressRequest.getCity());
         address.setZipcode(addressRequest.getZipcode());
+        return address;
+    }
+
+    public AddressRequest mapToAddressRequestupdate(UpdateRequest updateRequest) {
+        System.out.println(updateRequest.getAddress());
+        AddressRequest address = new AddressRequest();
+        if (updateRequest.getId() != null) {
+            address.setId(updateRequest.getId());
+        }
+        address.setAddress(updateRequest.getAddress());
+        address.setCity(updateRequest.getCity());
+        address.setZipcode(Double.valueOf(updateRequest.getZipcode()));
+//        address.setEvent_id(eventAddress.getId());
         return address;
     }
 }

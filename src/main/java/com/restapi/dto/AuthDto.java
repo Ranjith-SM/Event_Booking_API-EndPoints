@@ -10,6 +10,7 @@ public class AuthDto {
 
     public AppUser mapToAppUser(RegisterRequest user) {
         AppUser appUser = new AppUser();
+        appUser.setEmail(user.getEmail());
         appUser.setUsername(user.getUsername());
         appUser.setName(user.getName());
         appUser.setPassword(user.getPassword());
@@ -22,6 +23,7 @@ public class AuthDto {
         AuthResponse authResponse = new AuthResponse();
         authResponse.setId(appUser.getId());
         authResponse.setName(appUser.getName());
+        authResponse.setEmail(appUser.getEmail());
         authResponse.setUsername(appUser.getUsername());
         authResponse.setRole(appUser.getRoles().getName());
         return authResponse;

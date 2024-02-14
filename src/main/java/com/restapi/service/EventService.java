@@ -5,14 +5,12 @@ import com.restapi.dto.EventDto;
 import com.restapi.exception.common.ResourceNotFoundException;
 import com.restapi.model.*;
 import com.restapi.repository.*;
-import com.restapi.request.AddressRequest;
-import com.restapi.request.BookedEventsRequest;
-import com.restapi.request.BookedUsersRequest;
-import com.restapi.request.EventRequest;
+import com.restapi.request.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
@@ -62,7 +60,7 @@ public class EventService {
 
     @Transactional
     public List<EventTicket> createEvent(EventRequest eventRequest) {
-        System.out.println(eventRequest.getAddress());
+
         EventTicket event = eventDto.mapToEvent(eventRequest);
         AddressRequest addressRequest = addressDto.mapToAddressRequest(eventRequest);
         Address address = addressDto.mapToAddress(addressRequest);
@@ -70,13 +68,11 @@ public class EventService {
         EventCategory category = categoryRepository.findById(eventRequest.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("CategoryId",
                         "CategoryId", eventRequest.getCategoryId()));
-        System.out.println(category.getId());
 
         address = addressRepository.save(address);
-        System.out.println(address.getId());
 
         event.setEventCategory(category);
-        System.out.println(address.getId());
+
         event.setAddress(address);
 
         eventTicketRepository.save(event);
@@ -84,13 +80,19 @@ public class EventService {
     }
 
     @Transactional
-    public List<EventTicket> updateEvent(EventRequest eventRequest) {
-        EventTicket event = eventDto.mapToEvent(eventRequest);
-        EventCategory category = categoryRepository.findById(eventRequest.getCategoryId())
+    public List<EventTicket> updateEvent(UpdateRequest updateRequest) {
+        EventTicket event = eventDto.mapToEventupdate(updateRequest);
+        EventCategory category = categoryRepository.findById(updateRequest.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("CategoryId",
-                        "CategoryId", eventRequest.getCategoryId()));
+                        "CategoryId", updateRequest.getCategoryId()));
 
-        AddressRequest addressRequest = addressDto.mapToAddressRequest(eventRequest);
+        EventTicket existingevent = eventTicketRepository.findById(updateRequest.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("id",
+                        "id", updateRequest.getId()));
+
+        event.setImage(existingevent.getImage());
+
+        AddressRequest addressRequest = addressDto.mapToAddressRequestupdate(updateRequest);
         Address address = addressDto.mapToAddress(addressRequest);
         address = addressRepository.save(address);
 
@@ -102,6 +104,15 @@ public class EventService {
     }
 
     public List<EventTicket> deleteById(Integer id) {
+        EventTicket eventTicket = eventTicketRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("EventTicket not found"));
+
+        List<BookedEvents> bookedEvents = bookedEventsRepository.findByEventTicketId(id);
+        for (BookedEvents bookedEvent : bookedEvents) {
+            bookedEvent.setEventTicket(null);
+            bookedEventsRepository.save(bookedEvent);
+        }
+
         eventTicketRepository.deleteById(id);
         return findAll();
     }
@@ -119,7 +130,10 @@ public class EventService {
         bookedEvents.setEventTicket(event);
         bookedEvents.setAppUser(appUser);
         bookedEvents.setCount(bookedEventsRequest.getCount());
+
+
         bookedEvents = bookedEventsRepository.save(bookedEvents);
+        eventTicketRepository.updateTickets(Double.valueOf(bookedEvents.getCount()),event.getId());
 
 
         List<BookedUserDetails> bookedUserDetails = new ArrayList<>();
@@ -140,7 +154,9 @@ public class EventService {
 
         }
 
+
         bookedEvents.setUserDetails(bookedUserDetails);
+
 
 
         return bookedEvents;

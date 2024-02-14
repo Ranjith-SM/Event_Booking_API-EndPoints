@@ -26,6 +26,9 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
+    private String email;
+
     @Column(name = "username", unique = true, nullable = false, length = 100)
     private String username;
 
@@ -47,7 +50,5 @@ public class AppUser {
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
-
-//    private Boolean deleteFlag = false;
 
 }

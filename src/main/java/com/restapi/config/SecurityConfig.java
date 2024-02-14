@@ -48,16 +48,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-//                .antMatchers("/h2-console/**")
-//                .permitAll()
                 .antMatchers("/api/auth/**")
                 .permitAll()
                 .antMatchers("/swagger-ui/**")
                 .permitAll()
                 .antMatchers("/api/images/downloadFile/**")
                 .permitAll()
+                .antMatchers("api/admin/event/all").permitAll()
+                .antMatchers("/api/email/**").permitAll()
                 .antMatchers("/api/admin/category/all/**")
                 .permitAll()
+
                 .anyRequest()
                 .authenticated()
                 .and().httpBasic()
@@ -71,4 +72,5 @@ public class SecurityConfig {
 
         return httpSecurity.build();
     }
+
 }

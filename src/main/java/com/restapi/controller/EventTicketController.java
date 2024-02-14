@@ -1,5 +1,6 @@
 package com.restapi.controller;
 
+import com.restapi.dto.BookedDto;
 import com.restapi.model.EventTicket;
 import com.restapi.request.BookedEventsRequest;
 import com.restapi.response.common.APIResponse;
@@ -19,6 +20,9 @@ public class EventTicketController {
 
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private BookedDto bookedDto;
 
     @GetMapping("/all")
     public ResponseEntity<APIResponse> getAllEvents() {

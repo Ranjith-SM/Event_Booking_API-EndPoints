@@ -28,6 +28,9 @@ public class DownloadController {
 
         File file = eventService.getFile(id);
 
+        // Determine content type based on file extension
+        String contentType = determineContentType(file.getName());
+
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
         HttpHeaders headers = new HttpHeaders();
@@ -38,7 +41,21 @@ public class DownloadController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentLength(file.length())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentType(MediaType.parseMediaType(contentType))
                 .body(resource);
+    }
+
+    private String determineContentType(String fileName) {
+        // Add more file extensions and corresponding content types as needed
+        if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+            return "image/jpeg";
+        } else if (fileName.endsWith(".png")) {
+            return "image/png";
+        } else if (fileName.endsWith(".gif")) {
+            return "image/gif";
+        } else {
+            // Default to octet-stream if the file type is not recognized
+            return "application/octet-stream";
+        }
     }
 }
